@@ -1,27 +1,29 @@
-# drum
+#react-drum
+In developing state now
 
-Get the AMD module located at `drum.js` and include it in your project.
+----------
 
-Here is a sample integration:
 
-```js
-require.config({
-  paths: {
-    'react': 'vendor/bower_components/react/react',
-    'Drum': 'drum'
-  }
-});
+##Installing
 
-require(['react', 'Drum'], function(React, Drum) {
+    npm install react-drum
 
-  React.render(React.createElement(Drum), document.getElementById('widget-container'));
+##Using
 
-});
-```
+    import React from 'react';
+    import Drum from 'react-drum';
 
-## Development
 
-* Development server `npm start`.
-* Continuously run tests on file changes `npm run watch-test`;
-* Run tests: `npm test`;
-* Build `npm run build`;
+    class Wrapper extends React.Component {
+      render() {
+        let options = Array(100).fill().map((x, i) => (
+          <div key={i}>{i+1}</div>
+        ));
+    
+        return(
+          <Drum toShow={7}>
+            {options}
+          </Drum>
+        )
+      }
+    }
