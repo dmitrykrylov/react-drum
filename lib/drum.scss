@@ -1,0 +1,23 @@
+.drum-component {
+  height: 150px;
+  width: 50px;
+
+  .drum {
+    height: 100%;
+    border: 1px solid #aaa;
+    display: block;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .option {
+    border-bottom: 1px solid #ccc;
+    height: 100%;
+    padding-left: 10px; 
+  }
+
+  .arrow {
+    text-align: center;
+    color: #aaa;
+  }
+}
