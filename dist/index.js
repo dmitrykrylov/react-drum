@@ -87,11 +87,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _classCallCheck(this, Drum);
 
 	    _get(Object.getPrototypeOf(Drum.prototype), 'constructor', this).call(this);
+
+	    // outsideChange property determines if offset was set by props. Useful for synchronizing.
 	    this.state = {
 	      current: 0,
 	      initialized: false,
 	      offset: 0,
-	      drag: false
+	      drag: false,
+	      outsideChange: false
 	    };
 	  }
 
@@ -99,6 +102,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.setState({ initialized: true, offset: this.calculateDefaultOffset() });
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      this.setState({ offset: nextProps.offset, outsideChange: true });
 	    }
 	  }, {
 	    key: 'componentWillUpdate',
@@ -109,6 +117,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	          index: index,
 	          value: this.props.children[index].props.value
 	        });
+	      }
+
+	      if (this.state.offset !== nextState.offset && !this.state.outsideChange) {
+	        this.props.onOffsetChange({ offset: this.state.offset });
+	      }
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (this.state.outsideChange) {
+	        this.setState({ outsideChange: false });
 	      }
 	    }
 	  }, {
@@ -130,6 +149,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'dragStart',
 	    value: function dragStart(e) {
+	      e.preventDefault();
+
 	      if (e.touches && e.touches.length > 1) {
 	        return;
 	      }
@@ -145,6 +166,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'drag',
 	    value: function drag(e) {
+	      e.preventDefault();
 	      if (this.state.drag) {
 	        var delta = e.touches[0].clientY - this.state.swipeStart;
 	        this.setState({
@@ -301,6 +323,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	Drum.propTypes = {
 	  children: _react2['default'].PropTypes.array,
 	  onChange: _react2['default'].PropTypes.func,
+	  onOffsetChange: _react2['default'].PropTypes.func,
+	  offset: _react2['default'].PropTypes.number,
 	  toShow: _react2['default'].PropTypes.number,
 	  drumClassName: _react2['default'].PropTypes.string
 	};
@@ -309,6 +333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  children: [],
 	  toShow: 5,
 	  onChange: function onChange() {},
+	  onOffsetChange: function onOffsetChange() {},
 	  componentClassName: 'drum-component',
 	  drumClassName: 'drum'
 	};
@@ -2181,8 +2206,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&includePaths[]=/Users/macbook/workspace/drum/bower_components&includePaths[]=/Users/macbook/workspace/drum/node_modules!./drum.scss", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&includePaths[]=/Users/macbook/workspace/drum/bower_components&includePaths[]=/Users/macbook/workspace/drum/node_modules!./drum.scss");
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&includePaths[]=/Users/dmitry/workspace/drum/bower_components&includePaths[]=/Users/dmitry/workspace/drum/node_modules!./drum.scss", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&includePaths[]=/Users/dmitry/workspace/drum/bower_components&includePaths[]=/Users/dmitry/workspace/drum/node_modules!./drum.scss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -2200,7 +2225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".drum-component {\n  height: 150px;\n  width: 50px;\n}\n\n.drum-component .drum {\n  height: 100%;\n  border: 1px solid #aaa;\n  display: block;\n  overflow: hidden;\n  position: relative;\n}\n\n.drum-component .option {\n  border-bottom: 1px solid #ccc;\n  height: 100%;\n  padding-left: 10px;\n}\n\n.drum-component .arrow {\n  text-align: center;\n  color: #aaa;\n}\n", ""]);
+	exports.push([module.id, ".drum-component {\n  height: 200px;\n  width: 50px;\n}\n\n.drum-component .drum {\n  height: 100%;\n  border: 1px solid #aaa;\n  display: block;\n  overflow: hidden;\n  position: relative;\n}\n\n.drum-component .option {\n  border-bottom: 1px solid #ccc;\n  height: 100%;\n  padding-left: 10px;\n}\n\n.drum-component .arrow {\n  text-align: center;\n  color: #aaa;\n}\n", ""]);
 
 	// exports
 
